@@ -86,6 +86,12 @@
         "sdkmanager.json"
       ]
     },
+    "w64devkit": {
+      "updated": "?",
+      "manifests": [
+        "w64devkit/win32.json"
+      ]
+    },
     "yt-dlp": {
       "updated": "?",
       "manifests": [

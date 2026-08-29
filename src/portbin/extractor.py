@@ -15,7 +15,7 @@ def extract(archive: Path, dest: Path) -> None:
     elif archive.suffix in (".tar", ".tgz", ".gz", ".bz2", ".xz"):
         with tarfile.open(archive) as tf:
             tf.extractall(dest, filter="data")
-    elif archive.suffix == ".7z" or archive.name.endswith(".7z"):
+    elif archive.suffix in (".7z", ".exe") or archive.name.endswith(".7z") or archive.name.endswith(".7z.exe"):
         _extract_7z(archive, dest)
     else:
         raise ValueError(f"tipo de archivo no soportado: {archive.suffix}")

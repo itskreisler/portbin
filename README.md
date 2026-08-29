@@ -47,6 +47,7 @@ Herramientas del sistema `D:\LIBS` — comando y version actual (escaneo 2026-08
 | go         | `go version`        | 1.26.6         |
 | composer   | `composer --version`| 2.5.3          |
 | fresh      | `fresh --version`   | 0.4.10         |
+| w64devkit  | `w64devkit --version` | 2.9.1        |
 
 ## ffmpeg (instalación manual, alternativa a manifest)
 

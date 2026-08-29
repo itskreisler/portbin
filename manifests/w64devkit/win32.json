@@ -1,0 +1,49 @@
+{
+  "tool": "w64devkit",
+  "platform": ["win32"],
+  "steps": [
+    {
+      "type": "download",
+      "url": "https://github.com/skeeto/w64devkit/releases/download/v2.9.1/w64devkit-x64-2.9.1.7z.exe",
+      "dest": "%TEMP%/portbin/w64devkit.7z.exe"
+    },
+    {
+      "type": "extract",
+      "archive": "%TEMP%/portbin/w64devkit.7z.exe",
+      "dest": "%TEMP%/portbin/w64devkit-extracted"
+    },
+    {
+      "type": "move",
+      "source": "%TEMP%/portbin/w64devkit-extracted",
+      "dest": "~/.local/share/portbin/tools/w64devkit"
+    },
+    {
+      "type": "shim",
+      "name": "gcc",
+      "command": "~/.local/share/portbin/tools/w64devkit/bin/gcc",
+      "scope": "user"
+    },
+    {
+      "type": "shim",
+      "name": "make",
+      "command": "~/.local/share/portbin/tools/w64devkit/bin/make",
+      "scope": "user"
+    },
+    {
+      "type": "shim",
+      "name": "w64devkit",
+      "command": "~/.local/share/portbin/tools/w64devkit/w64devkit.exe",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "gcc --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}
