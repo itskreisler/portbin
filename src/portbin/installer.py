@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from typing import Any
 
 from portbin import checksum, downloader, environment, extractor, platform
@@ -20,6 +21,27 @@ def step(step_type: str):
         return fn
 
     return deco
+
+
+def step_matches_platform(s: dict[str, Any]) -> bool:
+    plat = s.get("platform")
+    if not plat:
+        return True
+    if isinstance(plat, str):
+        plat = [plat]
+    current_os = sys.platform
+    current_sys = platform.info()["os"].lower()
+    for p in plat:
+        p_lower = str(p).lower()
+        if p_lower in (current_os, current_sys):
+            return True
+        if current_os == platform.WIN32_PLATFORM and p_lower in platform.WIN_PLATFORMS:
+            return True
+        if current_os.startswith("linux") and p_lower in platform.LINUX_PLATFORMS:
+            return True
+        if current_os == "darwin" and p_lower in platform.MACOS_PLATFORMS:
+            return True
+    return False
 
 
 def run(manifest: dict[str, Any], confirm: bool = True, scope: str | None = None,
@@ -43,6 +65,10 @@ def run(manifest: dict[str, Any], confirm: bool = True, scope: str | None = None
             elif s.get("type") == "path":
                 s["value"] = platform.translate_path(s["value"], bin_dir, prefix)
     for i, s in enumerate(steps):
+        if not step_matches_platform(s):
+            if VERBOSE:
+                print(f"[{i}] {s.get('type')}: omitido (plataforma no coincide)")
+            continue
         handler = HANDLERS.get(s.get("type"))
         if handler is None:
             raise SystemExit(f"step {i} tipo desconocido: {s.get('type')}")
@@ -102,9 +128,14 @@ def _run(s: dict, m: dict) -> None:
 def _shim(s: dict, m: dict) -> None:
     bin_dir = platform.resolve_path(s["bin"]) if s.get("bin") else platform.default_bin_dir()
     bin_dir.mkdir(parents=True, exist_ok=True)
-    exe = f"{s['name']}.cmd"
-    content = f"@echo off\r\n{platform.expand_command(s['command'])} %*\r\n"
-    (bin_dir / exe).write_text(content, encoding="utf-8")
+    shim_file = bin_dir / platform.get_shim_name(s["name"])
+    if platform.is_windows():
+        content = f"@echo off\r\n{platform.expand_command(s['command'])} %*\r\n"
+        shim_file.write_text(content, encoding="utf-8")
+    else:
+        content = f"#!/bin/sh\nexec {platform.expand_command(s['command'])} \"$@\"\n"
+        shim_file.write_text(content, encoding="utf-8")
+        shim_file.chmod(0o755)
 
 
 @step("path")
@@ -122,6 +153,8 @@ def uninstall(manifest: dict[str, Any], confirm: bool = True, bin_dir: str | Non
     import shutil
 
     for s in reversed(manifest.get("steps", [])):
+        if not step_matches_platform(s):
+            continue
         t = s.get("type")
         if t == "move":
             dest = platform.resolve_path(platform.translate_path(s["dest"], bin_dir, prefix))
@@ -145,7 +178,7 @@ def uninstall(manifest: dict[str, Any], confirm: bool = True, bin_dir: str | Non
         elif t == "shim":
             target = bin_dir if bin_dir else (s.get("bin") if s.get("bin") else platform.default_bin_dir())
             bin_dir_p = platform.resolve_path(target)
-            exe = bin_dir_p / f"{s['name']}.cmd"
+            exe = bin_dir_p / platform.get_shim_name(s["name"])
             if exe.exists():
                 print(f"  borrando {exe}")
                 exe.unlink()

@@ -60,8 +60,10 @@ def _warn_if_system_write(manifest: dict, tool: str) -> None:
 
 def _tool_ok(manifest: dict) -> bool:
     for s in manifest.get("steps", []):
+        if not installer.step_matches_platform(s):
+            continue
         if s.get("type") == "shim":
-            exe = platform.default_bin_dir() / f"{s['name']}.cmd"
+            exe = platform.default_bin_dir() / platform.get_shim_name(s["name"])
             if not exe.exists():
                 return False
         if s.get("type") == "move":
@@ -177,7 +179,7 @@ def _cmd_index() -> int:
     if local is None:
         print("no hay dir local de manifests (usa PORTBIN_MANIFESTS o corre desde el repo)")
         return 1
-    tools = {p.stem: {"updated": "?"} for p in sorted(local.glob("*.json"))}
+    tools = {p.stem: {"updated": "?"} for p in sorted(local.glob("*.json")) if p.name != "index.json"}
     data = {"tools": tools}
     idx = local / "index.json"
     with idx.open("w", encoding="utf-8") as fh:
@@ -233,8 +235,10 @@ def _cmd_list() -> int:
         version = (info.get("current") or "?").split()[0] if info.get("current") else "?"
         exe, payload, state = "?", "?", "ok"
         for s in (manifest or {}).get("steps", []):
+            if not installer.step_matches_platform(s):
+                continue
             if s.get("type") == "shim":
-                exe = str(platform.default_bin_dir() / f"{s['name']}.cmd")
+                exe = str(platform.default_bin_dir() / platform.get_shim_name(s["name"]))
             if s.get("type") == "move":
                 payload = platform.expand(s["dest"])
         if manifest is None:

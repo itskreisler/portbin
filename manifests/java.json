@@ -1,0 +1,58 @@
+{
+  "tool": "java",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip",
+      "dest": "%TEMP%/portbin/java.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/java.zip",
+      "dest": "%TEMP%/portbin/java-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/java-extracted",
+      "dest": "~/.local/share/portbin/tools/java"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_linux_hotspot_21.0.6_7.tar.gz",
+      "dest": "%TEMP%/portbin/java.tar.gz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/java.tar.gz",
+      "dest": "%TEMP%/portbin/java-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/java-extracted",
+      "dest": "~/.local/share/portbin/tools/java"
+    },
+    {
+      "type": "shim",
+      "name": "java",
+      "command": "~/.local/share/portbin/tools/java/bin/java",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "java -version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tool": "ngrok",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip",
+      "dest": "%TEMP%/portbin/ngrok.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/ngrok.zip",
+      "dest": "%TEMP%/portbin/ngrok-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/ngrok-extracted",
+      "dest": "~/.local/share/portbin/tools/ngrok"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz",
+      "dest": "%TEMP%/portbin/ngrok.tgz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/ngrok.tgz",
+      "dest": "%TEMP%/portbin/ngrok-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/ngrok-extracted",
+      "dest": "~/.local/share/portbin/tools/ngrok"
+    },
+    {
+      "type": "shim",
+      "name": "ngrok",
+      "command": "~/.local/share/portbin/tools/ngrok/ngrok",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "ngrok version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

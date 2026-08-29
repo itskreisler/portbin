@@ -1,6 +1,48 @@
 {
   "tools": {
+    "adb": {
+      "updated": "?"
+    },
+    "cmake": {
+      "updated": "?"
+    },
     "composer": {
+      "updated": "?"
+    },
+    "dotnet": {
+      "updated": "?"
+    },
+    "ffmpeg": {
+      "updated": "?"
+    },
+    "flutter": {
+      "updated": "?"
+    },
+    "fresh": {
+      "updated": "?"
+    },
+    "gcc": {
+      "updated": "?"
+    },
+    "go": {
+      "updated": "?"
+    },
+    "java": {
+      "updated": "?"
+    },
+    "make": {
+      "updated": "?"
+    },
+    "ngrok": {
+      "updated": "?"
+    },
+    "scrcpy": {
+      "updated": "?"
+    },
+    "sdkmanager": {
+      "updated": "?"
+    },
+    "yt-dlp": {
       "updated": "?"
     }
   }

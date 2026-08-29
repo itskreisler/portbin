@@ -1,0 +1,58 @@
+{
+  "tool": "sdkmanager",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.zip",
+      "dest": "%TEMP%/portbin/cmdline-tools.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/cmdline-tools.zip",
+      "dest": "%TEMP%/portbin/cmdline-tools-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/cmdline-tools-extracted",
+      "dest": "~/.local/share/portbin/tools/sdkmanager"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip",
+      "dest": "%TEMP%/portbin/cmdline-tools.zip"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/cmdline-tools.zip",
+      "dest": "%TEMP%/portbin/cmdline-tools-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/cmdline-tools-extracted",
+      "dest": "~/.local/share/portbin/tools/sdkmanager"
+    },
+    {
+      "type": "shim",
+      "name": "sdkmanager",
+      "command": "~/.local/share/portbin/tools/sdkmanager/cmdline-tools/bin/sdkmanager",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "sdkmanager --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tool": "flutter",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.29.0-stable.zip",
+      "dest": "%TEMP%/portbin/flutter.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/flutter.zip",
+      "dest": "%TEMP%/portbin/flutter-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/flutter-extracted",
+      "dest": "~/.local/share/portbin/tools/flutter"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.29.0-stable.tar.xz",
+      "dest": "%TEMP%/portbin/flutter.tar.xz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/flutter.tar.xz",
+      "dest": "%TEMP%/portbin/flutter-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/flutter-extracted",
+      "dest": "~/.local/share/portbin/tools/flutter"
+    },
+    {
+      "type": "shim",
+      "name": "flutter",
+      "command": "~/.local/share/portbin/tools/flutter/bin/flutter",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "flutter --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

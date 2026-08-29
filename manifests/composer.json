@@ -1,6 +1,6 @@
 {
   "tool": "composer",
-  "platform": ["win32"],
+  "platform": ["win32", "linux"],
   "steps": [
     {
       "type": "download",

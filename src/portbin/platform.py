@@ -5,9 +5,18 @@ import platform as _pyplatform
 import sys
 from pathlib import Path
 
+WIN32_PLATFORM = "win32"
+WIN_PLATFORMS = {"win32", "windows", "win"}
+LINUX_PLATFORMS = {"linux", "linux2", "gnu", "musl"}
+MACOS_PLATFORMS = {"darwin", "mac", "macos", "osx"}
+
 
 def is_windows() -> bool:
-    return sys.platform == "win32"
+    return sys.platform == WIN32_PLATFORM
+
+
+def get_shim_name(name: str) -> str:
+    return f"{name}.cmd" if is_windows() else name
 
 
 def info() -> dict[str, str]:

@@ -1,0 +1,46 @@
+{
+  "tool": "yt-dlp",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe",
+      "dest": "%TEMP%/portbin/yt-dlp.exe"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/yt-dlp.exe",
+      "dest": "~/.local/share/portbin/tools/yt-dlp/yt-dlp.exe"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
+      "dest": "%TEMP%/portbin/yt-dlp"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/yt-dlp",
+      "dest": "~/.local/share/portbin/tools/yt-dlp/yt-dlp"
+    },
+    {
+      "type": "shim",
+      "name": "yt-dlp",
+      "command": "~/.local/share/portbin/tools/yt-dlp/yt-dlp",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "yt-dlp --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tool": "make",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/skeeto/w64devkit/releases/download/v2.0.0/w64devkit-v2.0.0.zip",
+      "dest": "%TEMP%/portbin/make.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/make.zip",
+      "dest": "%TEMP%/portbin/make-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/make-extracted",
+      "dest": "~/.local/share/portbin/tools/make"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://musl.cc/x86_64-linux-musl-native.tgz",
+      "dest": "%TEMP%/portbin/make.tgz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/make.tgz",
+      "dest": "%TEMP%/portbin/make-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/make-extracted",
+      "dest": "~/.local/share/portbin/tools/make"
+    },
+    {
+      "type": "shim",
+      "name": "make",
+      "command": "~/.local/share/portbin/tools/make/bin/make",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "make --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

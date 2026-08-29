@@ -1,0 +1,58 @@
+{
+  "tool": "cmake",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/Kitware/CMake/releases/download/v3.31.5/cmake-3.31.5-windows-x86_64.zip",
+      "dest": "%TEMP%/portbin/cmake.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/cmake.zip",
+      "dest": "%TEMP%/portbin/cmake-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/cmake-extracted",
+      "dest": "~/.local/share/portbin/tools/cmake"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://github.com/Kitware/CMake/releases/download/v3.31.5/cmake-3.31.5-linux-x86_64.tar.gz",
+      "dest": "%TEMP%/portbin/cmake.tar.gz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/cmake.tar.gz",
+      "dest": "%TEMP%/portbin/cmake-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/cmake-extracted",
+      "dest": "~/.local/share/portbin/tools/cmake"
+    },
+    {
+      "type": "shim",
+      "name": "cmake",
+      "command": "~/.local/share/portbin/tools/cmake/bin/cmake",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "cmake --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

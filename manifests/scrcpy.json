@@ -1,0 +1,58 @@
+{
+  "tool": "scrcpy",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/Genymobile/scrcpy/releases/download/v3.1/scrcpy-win64-v3.1.zip",
+      "dest": "%TEMP%/portbin/scrcpy.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/scrcpy.zip",
+      "dest": "%TEMP%/portbin/scrcpy-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/scrcpy-extracted",
+      "dest": "~/.local/share/portbin/tools/scrcpy"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://github.com/Genymobile/scrcpy/releases/download/v3.1/scrcpy-linux-x86_64-v3.1.tar.gz",
+      "dest": "%TEMP%/portbin/scrcpy.tar.gz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/scrcpy.tar.gz",
+      "dest": "%TEMP%/portbin/scrcpy-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/scrcpy-extracted",
+      "dest": "~/.local/share/portbin/tools/scrcpy"
+    },
+    {
+      "type": "shim",
+      "name": "scrcpy",
+      "command": "~/.local/share/portbin/tools/scrcpy/scrcpy",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "scrcpy --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tool": "go",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://go.dev/dl/go1.24.0.windows-amd64.zip",
+      "dest": "%TEMP%/portbin/go.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/go.zip",
+      "dest": "%TEMP%/portbin/go-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/go-extracted",
+      "dest": "~/.local/share/portbin/tools/go"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://go.dev/dl/go1.24.0.linux-amd64.tar.gz",
+      "dest": "%TEMP%/portbin/go.tar.gz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/go.tar.gz",
+      "dest": "%TEMP%/portbin/go-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/go-extracted",
+      "dest": "~/.local/share/portbin/tools/go"
+    },
+    {
+      "type": "shim",
+      "name": "go",
+      "command": "~/.local/share/portbin/tools/go/bin/go",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "go version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

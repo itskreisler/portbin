@@ -1,0 +1,58 @@
+{
+  "tool": "adb",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://dl.google.com/android/repository/platform-tools-latest-windows.zip",
+      "dest": "%TEMP%/portbin/platform-tools.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/platform-tools.zip",
+      "dest": "%TEMP%/portbin/platform-tools-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/platform-tools-extracted",
+      "dest": "~/.local/share/portbin/tools/adb"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://dl.google.com/android/repository/platform-tools-latest-linux.zip",
+      "dest": "%TEMP%/portbin/platform-tools.zip"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/platform-tools.zip",
+      "dest": "%TEMP%/portbin/platform-tools-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/platform-tools-extracted",
+      "dest": "~/.local/share/portbin/tools/adb"
+    },
+    {
+      "type": "shim",
+      "name": "adb",
+      "command": "~/.local/share/portbin/tools/adb/adb",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "adb --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}

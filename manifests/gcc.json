@@ -1,0 +1,58 @@
+{
+  "tool": "gcc",
+  "platform": ["win32", "linux"],
+  "steps": [
+    {
+      "platform": ["win32"],
+      "type": "download",
+      "url": "https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-19.1.1-12.0.0-ucrt-r2/winlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.1-mingw-w64ucrt-r2.zip",
+      "dest": "%TEMP%/portbin/gcc.zip"
+    },
+    {
+      "platform": ["win32"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/gcc.zip",
+      "dest": "%TEMP%/portbin/gcc-extracted"
+    },
+    {
+      "platform": ["win32"],
+      "type": "move",
+      "source": "%TEMP%/portbin/gcc-extracted",
+      "dest": "~/.local/share/portbin/tools/gcc"
+    },
+    {
+      "platform": ["linux"],
+      "type": "download",
+      "url": "https://musl.cc/x86_64-linux-musl-native.tgz",
+      "dest": "%TEMP%/portbin/gcc.tgz"
+    },
+    {
+      "platform": ["linux"],
+      "type": "extract",
+      "archive": "%TEMP%/portbin/gcc.tgz",
+      "dest": "%TEMP%/portbin/gcc-extracted"
+    },
+    {
+      "platform": ["linux"],
+      "type": "move",
+      "source": "%TEMP%/portbin/gcc-extracted",
+      "dest": "~/.local/share/portbin/tools/gcc"
+    },
+    {
+      "type": "shim",
+      "name": "gcc",
+      "command": "~/.local/share/portbin/tools/gcc/bin/gcc",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "gcc --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}
