@@ -50,8 +50,6 @@ def _flatten(dest: Path) -> None:
     if len(children) != 1 or not children[0].is_dir():
         return
     inner = children[0]
-    if not (inner / "bin").is_dir() and not any((inner / n).is_file() for n in ("bin", "bin.exe")):
-        return
     for item in list(inner.iterdir()):
         shutil.move(str(item), str(dest / item.name))
     inner.rmdir()

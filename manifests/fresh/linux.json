@@ -1,51 +1,23 @@
 {
   "tool": "fresh",
-  "platform": ["win32", "linux"],
+  "platform": ["linux"],
   "steps": [
     {
-      "platform": ["win32"],
-      "type": "download",
-      "url": "https://github.com/sinelaw/fresh/releases/download/v0.4.10/fresh-editor-x86_64-pc-windows-msvc.zip",
-      "dest": "%TEMP%/portbin/fresh.zip"
-    },
-    {
-      "platform": ["win32"],
-      "type": "verify",
-      "file": "%TEMP%/portbin/fresh.zip",
-      "sha256": "30abbfce00901b92ce55ef364af1f2d4fdf25e36f36449d3c7cb7d35573f3a8b"
-    },
-    {
-      "platform": ["win32"],
-      "type": "extract",
-      "archive": "%TEMP%/portbin/fresh.zip",
-      "dest": "%TEMP%/portbin/fresh-extracted"
-    },
-    {
-      "platform": ["win32"],
-      "type": "move",
-      "source": "%TEMP%/portbin/fresh-extracted",
-      "dest": "~/.local/share/portbin/tools/fresh"
-    },
-    {
-      "platform": ["linux"],
       "type": "download",
       "url": "https://github.com/sinelaw/fresh/releases/download/v0.4.10/fresh-editor-x86_64-unknown-linux-musl.tar.gz",
       "dest": "%TEMP%/portbin/fresh.tar.gz"
     },
     {
-      "platform": ["linux"],
       "type": "verify",
       "file": "%TEMP%/portbin/fresh.tar.gz",
       "sha256": "7dd479442b77e794a160ac6b5a9c74c957251e7d8f221622ce828a5649791eed"
     },
     {
-      "platform": ["linux"],
       "type": "extract",
       "archive": "%TEMP%/portbin/fresh.tar.gz",
       "dest": "%TEMP%/portbin/fresh-extracted"
     },
     {
-      "platform": ["linux"],
       "type": "move",
       "source": "%TEMP%/portbin/fresh-extracted",
       "dest": "~/.local/share/portbin/tools/fresh"

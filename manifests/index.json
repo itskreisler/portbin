@@ -1,49 +1,96 @@
 {
   "tools": {
     "adb": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "adb.json"
+      ]
     },
     "cmake": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "cmake.json"
+      ]
     },
     "composer": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "composer.json"
+      ]
     },
     "dotnet": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "dotnet.json"
+      ]
     },
     "ffmpeg": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "ffmpeg/linux.json",
+        "ffmpeg/win32.json"
+      ]
     },
     "flutter": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "flutter.json"
+      ]
     },
     "fresh": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "fresh/linux.json",
+        "fresh/win32.json"
+      ]
     },
     "gcc": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "gcc.json"
+      ]
     },
     "go": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "go.json"
+      ]
     },
     "java": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "java.json"
+      ]
     },
     "make": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "make.json"
+      ]
     },
     "ngrok": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "ngrok.json"
+      ]
     },
     "scrcpy": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "scrcpy.json"
+      ]
     },
     "sdkmanager": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "sdkmanager.json"
+      ]
     },
     "yt-dlp": {
-      "updated": "?"
+      "updated": "?",
+      "manifests": [
+        "yt-dlp.json"
+      ]
     }
   }
 }

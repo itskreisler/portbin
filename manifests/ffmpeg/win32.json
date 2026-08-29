@@ -1,39 +1,18 @@
 {
   "tool": "ffmpeg",
-  "platform": ["win32", "linux"],
+  "platform": ["win32"],
   "steps": [
     {
-      "platform": ["win32"],
       "type": "download",
       "url": "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip",
       "dest": "%TEMP%/portbin/ffmpeg.zip"
     },
     {
-      "platform": ["win32"],
       "type": "extract",
       "archive": "%TEMP%/portbin/ffmpeg.zip",
       "dest": "%TEMP%/portbin/ffmpeg-extracted"
     },
     {
-      "platform": ["win32"],
-      "type": "move",
-      "source": "%TEMP%/portbin/ffmpeg-extracted",
-      "dest": "~/.local/share/portbin/tools/ffmpeg"
-    },
-    {
-      "platform": ["linux"],
-      "type": "download",
-      "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-02-28-13-08/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz",
-      "dest": "%TEMP%/portbin/ffmpeg.tar.xz"
-    },
-    {
-      "platform": ["linux"],
-      "type": "extract",
-      "archive": "%TEMP%/portbin/ffmpeg.tar.xz",
-      "dest": "%TEMP%/portbin/ffmpeg-extracted"
-    },
-    {
-      "platform": ["linux"],
       "type": "move",
       "source": "%TEMP%/portbin/ffmpeg-extracted",
       "dest": "~/.local/share/portbin/tools/ffmpeg"

@@ -179,7 +179,15 @@ def _cmd_index() -> int:
     if local is None:
         print("no hay dir local de manifests (usa PORTBIN_MANIFESTS o corre desde el repo)")
         return 1
-    tools = {p.stem: {"updated": "?"} for p in sorted(local.glob("*.json")) if p.name != "index.json"}
+    tools: dict[str, dict] = {}
+    for p in sorted(local.rglob("*.json")):
+        if p.name == "index.json":
+            continue
+        rel = p.relative_to(local)
+        tool_name = rel.parts[0] if len(rel.parts) > 1 else p.stem
+        if tool_name not in tools:
+            tools[tool_name] = {"updated": "?", "manifests": []}
+        tools[tool_name]["manifests"].append(str(rel).replace("\\", "/"))
     data = {"tools": tools}
     idx = local / "index.json"
     with idx.open("w", encoding="utf-8") as fh:
