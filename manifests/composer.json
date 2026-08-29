@@ -1,0 +1,32 @@
+{
+  "tool": "composer",
+  "platform": ["win32"],
+  "steps": [
+    {
+      "type": "download",
+      "url": "https://getcomposer.org/download/latest-stable/composer.phar",
+      "dest": "%TEMP%/portbin/composer.phar"
+    },
+    {
+      "type": "move",
+      "source": "%TEMP%/portbin/composer.phar",
+      "dest": "~/.local/share/portbin/tools/composer/composer.phar"
+    },
+    {
+      "type": "shim",
+      "name": "composer",
+      "command": "php ~/.local/share/portbin/tools/composer/composer.phar",
+      "scope": "user"
+    },
+    {
+      "type": "run",
+      "command": "composer --version",
+      "capture": true
+    },
+    {
+      "type": "path",
+      "value": "~/.local/bin",
+      "scope": "user"
+    }
+  ]
+}
