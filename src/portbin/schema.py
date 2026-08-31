@@ -109,9 +109,14 @@ class Manifest(BaseModel):
 
 
 class PbxSpec(BaseModel):
-    """Spec de pbx: binario que se ejecuta temporalmente desde el cache en %TEMP%."""
+    """Spec de pbx: desde dónde ejecutar el binario temporalmente (cache en temp).
 
-    command: str = Field(description="Binario dentro del payload que ejecuta 'pbx use' (ej. 'fresh.exe').")
+    Un manifest puede definir un binario fijo (``command``) o un directorio de
+    binarios (``bin_dir``) donde el primer argumento de pbx elige cuál ejecutar.
+    """
+
+    command: str | None = Field(default=None, description="Binario fijo a ejecutar (ej. 'fresh.exe').")
+    bin_dir: str | None = Field(default=None, description="Dir relativo en el payload con los binarios (ej. 'bin'); el 1er arg de pbx elige cuál.")
 
 
 def validate_manifest(data: dict[str, Any], *, source: str = "manifest") -> Manifest:

@@ -1,0 +1,12 @@
+{
+  "tool": "w64devkit",
+  "platform": "win32",
+  "version": "2.9.1",
+  "note": "Kit de desarrollo portable (GCC 16.2, make, ninja, cmake, cpp, etc.). SFX 7zip.",
+  "pbx": { "bin_dir": "bin" },
+  "steps": [
+    { "type": "download", "url": "https://github.com/skeeto/w64devkit/releases/download/v2.9.1/w64devkit-x64-2.9.1.7z.exe", "dest": "%TEMP%/portbin/w64devkit.7z.exe" },
+    { "type": "verify", "file": "%TEMP%/portbin/w64devkit.7z.exe", "sha256": "9208c19755cd4964b7915b9afcf02c66d493a4c870c4b3e83f6c538d9c1237a5" },
+    { "type": "extract", "archive": "%TEMP%/portbin/w64devkit.7z.exe", "dest": "~/.local/share/portbin/tools/w64devkit" }
+  ]
+}

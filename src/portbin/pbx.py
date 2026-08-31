@@ -23,6 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
     c = sub.add_parser("clean", help="Elimina el cache temporal (cache = todo, o el nombre de una herramienta).")
     c.add_argument("target", help="'cache' para borrar todo, o el nombre de una herramienta.")
 
+    sub.add_parser("list", help="Lista herramientas usadas via pbx y su estado de cache.")
+
     return p
 
 
@@ -36,6 +38,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.target == "cache":
             return use.clean_all()
         return use.remove(args.target)
+    if args.command == "list":
+        return use.list_pbx()
     return 2
 
 
