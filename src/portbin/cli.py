@@ -98,7 +98,13 @@ def _cmd_add(tool: str, yes: bool, scope: str | None = None, bin_dir: str | None
                 continue
             if environment.path_contains(value, scope="machine") or environment.path_contains(value, scope="user"):
                 added.append(value)
-        registry.write(manifest["tool"], metadata.current_version_from(manifest) or "unknown", added)
+        registry.write(
+            manifest["tool"],
+            metadata.current_version_from(manifest) or "unknown",
+            added,
+            bin_dir=bin_dir,
+            prefix=prefix,
+        )
         return 0
     return 1
 
@@ -112,13 +118,20 @@ def _cmd_update(tool: str, yes: bool, scope: str | None = None, bin_dir: str | N
     result = installer.install(manifest, confirm=not yes, scope=scope, bin_dir=bin_dir, prefix=prefix)
     if result:
         stored = registry.load().get("tools", {}).get(tool, {}).get("paths", [])
-        registry.write(manifest["tool"], metadata.current_version_from(manifest) or "unknown", stored)
+        registry.write(
+            manifest["tool"],
+            metadata.current_version_from(manifest) or "unknown",
+            stored,
+            bin_dir=bin_dir,
+            prefix=prefix,
+        )
         return 0
     return 1
 
 
 def _cmd_remove(tool: str, yes: bool, bin_dir: str | None = None, prefix: str | None = None) -> int:
-    opts = config.merge(None, bin_dir, prefix)
+    saved = registry.load().get("tools", {}).get(tool, {})
+    opts = config.merge(None, bin_dir or saved.get("bin_dir"), prefix or saved.get("prefix"))
     bin_dir, prefix = opts["bin_dir"], opts["prefix"]
     manifest = metadata.load_manifest(tool)
     _warn_if_system_write(manifest, tool)
