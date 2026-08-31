@@ -1,0 +1,7 @@
+{
+  "tool": "ffmpeg",
+  "platform": "universal",
+  "version": "release",
+  "note": "placeholder multiplataforma: usa win32.json (Windows) o linux.json (Linux). Sin build portable unico.",
+  "steps": []
+}

@@ -2,5 +2,6 @@
 .ruff_cache/
 __pycache__/
 dist/
+build/
 *.egg-info/
 portbin.spec

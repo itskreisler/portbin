@@ -13,7 +13,10 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Environment :: Console",
 ]
-dependencies = ["truststore>=0.10"]
+dependencies = [
+    "pydantic>=2.13.5",
+    "truststore>=0.10",
+]
 
 [project.scripts]
 portbin = "portbin.cli:main"

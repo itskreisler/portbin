@@ -14,12 +14,15 @@ def path() -> Path:
     return root() / "portbin.json"
 
 
+DEFAULT_REPO = "https://raw.githubusercontent.com/itskreisler/portbin/refs/heads/master"
+
+
 def defaults() -> dict[str, str]:
     return {
         "scope": "user",
         "bin_dir": str(platform.default_bin_dir()),
         "prefix": str(platform.default_prefix()),
-        "repo": "",
+        "repo": DEFAULT_REPO,
     }
 
 
@@ -28,6 +31,8 @@ def load() -> dict[str, str]:
     if path().exists():
         with path().open(encoding="utf-8") as fh:
             cfg.update(json.load(fh))
+    if not cfg.get("repo"):
+        cfg["repo"] = DEFAULT_REPO
     return cfg
 
 

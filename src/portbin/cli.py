@@ -4,7 +4,7 @@ import argparse
 import sys
 from collections.abc import Sequence
 
-from portbin import config, environment, installer, metadata, platform, registry
+from portbin import config, environment, installer, metadata, platform, registry, schema
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -20,6 +20,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p_cfg.add_argument("--prefix")
     p_cfg.add_argument("--repo")
     sub.add_parser("index", help="Regenera index.json desde manifests locales")
+    sub.add_parser("manifest-schema", help="Imprime el JSON Schema de un manifest")
     sub.add_parser("check", help="Muestra estado del entorno: plataforma, bin dir, registros")
 
     p_add = sub.add_parser("add", help="Instala una herramienta desde su manifest")
@@ -177,12 +178,25 @@ def _cmd_index() -> int:
     if local is None:
         print("no hay dir local de manifests (usa PORTBIN_MANIFESTS o corre desde el repo)")
         return 1
-    tools = {p.stem: {"updated": "?"} for p in sorted(local.glob("*.json"))}
-    data = {"tools": tools}
+    entries = []
+    for p in sorted(local.glob("**/*.json")):
+        if p.name == "index.json":
+            continue
+        rel = p.relative_to(local)
+        if len(rel.parts) < 2:
+            continue
+        data = json.loads(p.read_text(encoding="utf-8"))
+        schema.validate_manifest(data, source=str(rel))
+        entries.append({"path": rel.as_posix(), "manifest": data})
     idx = local / "index.json"
     with idx.open("w", encoding="utf-8") as fh:
-        json.dump(data, fh, indent=2)
-    print(f"index regenerado: {idx} ({len(tools)} tools)")
+        json.dump(entries, fh, indent=2)
+    print(f"index regenerado: {idx} ({len(entries)} manifests)")
+    return 0
+
+
+def _cmd_manifest_schema() -> int:
+    print(schema.schema_json())
     return 0
 
 
@@ -282,4 +296,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     if args.command == "index":
         return _cmd_index()
+    if args.command == "manifest-schema":
+        return _cmd_manifest_schema()
     return 2

@@ -1,0 +1,14 @@
+{
+  "tool": "ffmpeg",
+  "platform": "win32",
+  "version": "release",
+  "steps": [
+    { "type": "download", "url": "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip", "dest": "%TEMP%/portbin/ffmpeg.zip" },
+    { "type": "extract", "archive": "%TEMP%/portbin/ffmpeg.zip", "dest": "~/.local/share/portbin/tools/ffmpeg" },
+    { "type": "shim", "name": "ffmpeg", "command": "~/.local/share/portbin/tools/ffmpeg/bin/ffmpeg.exe", "scope": "user" },
+    { "type": "shim", "name": "ffprobe", "command": "~/.local/share/portbin/tools/ffmpeg/bin/ffprobe.exe", "scope": "user" },
+    { "type": "shim", "name": "ffplay", "command": "~/.local/share/portbin/tools/ffmpeg/bin/ffplay.exe", "scope": "user" },
+    { "type": "run", "command": "ffmpeg -version", "capture": true },
+    { "type": "path", "value": "~/.local/bin", "scope": "user" }
+  ]
+}
