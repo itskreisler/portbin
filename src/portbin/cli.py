@@ -246,11 +246,13 @@ def _cmd_list() -> int:
             pass
         version = (info.get("current") or "?").split()[0] if info.get("current") else "?"
         exe, payload, state = "?", "?", "ok"
+        cfg = config.load()
+        bin_dir, prefix = cfg["bin_dir"], cfg["prefix"]
         for s in (manifest or {}).get("steps", []):
             if s.get("type") == "shim":
-                exe = str(platform.default_bin_dir() / f"{s['name']}.cmd")
-            if s.get("type") == "move":
-                payload = platform.expand(s["dest"])
+                exe = str(platform.resolve_path(s.get("bin") or bin_dir) / f"{s['name']}.cmd")
+            if s.get("type") in ("move", "extract"):
+                payload = platform.translate_path(s["dest"], bin_dir, prefix)
         if manifest is None:
             state = "sin manifest"
         else:

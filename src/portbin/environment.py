@@ -13,6 +13,10 @@ def _reg_key(scope: str):
     return winreg.HKEY_CURRENT_USER, r"Environment"
 
 
+def _norm(p: str) -> str:
+    return p.replace("/", "\\").rstrip("\\").lower()
+
+
 def _read_reg_path(scope: str) -> list[str]:
     import winreg
 
@@ -50,15 +54,14 @@ def _broadcast() -> None:
 
 def path_contains(value: str, scope: str = "machine") -> bool:
     entries = _read_reg_path(scope) if is_windows() else [p for p in os.environ.get("Path", "").split(";") if p]
-    return value.rstrip("\\/").lower() in {e.rstrip("\\/").lower() for e in entries}
+    return _norm(value) in {_norm(e) for e in entries}
 
 
 def add_path(value: str, scope: str = "machine") -> bool:
     if not is_windows():
         return _env_add_path(value)
     entries = _read_reg_path(scope)
-    normalized = {e.rstrip("\\/").lower() for e in entries}
-    if value.rstrip("\\/").lower() in normalized:
+    if _norm(value) in {_norm(e) for e in entries}:
         return False
     entries.append(value)
     _write_reg_path(scope, entries)
@@ -70,8 +73,8 @@ def remove_path(value: str, scope: str = "machine") -> bool:
     if not is_windows():
         return _env_remove_path(value)
     entries = _read_reg_path(scope)
-    target = value.rstrip("\\/").lower()
-    kept = [e for e in entries if e.rstrip("\\/").lower() != target]
+    target = _norm(value)
+    kept = [e for e in entries if _norm(e) != target]
     if len(kept) == len(entries):
         return False
     _write_reg_path(scope, kept)
@@ -110,8 +113,7 @@ def del_var(name: str) -> None:
 
 def _env_add_path(value: str) -> bool:
     entries = [p for p in os.environ.get("Path", "").split(";") if p]
-    normalized = {e.rstrip("\\/").lower() for e in entries}
-    if value.rstrip("\\/").lower() in normalized:
+    if _norm(value) in {_norm(e) for e in entries}:
         return False
     entries.append(value)
     os.environ["Path"] = ";".join(entries)
@@ -120,8 +122,8 @@ def _env_add_path(value: str) -> bool:
 
 def _env_remove_path(value: str) -> bool:
     entries = os.environ.get("Path", "").split(";")
-    target = value.rstrip("\\/").lower()
-    kept = [e for e in entries if e and e.rstrip("\\/").lower() != target]
+    target = _norm(value)
+    kept = [e for e in entries if e and _norm(e) != target]
     changed = len(kept) != len(entries)
     os.environ["Path"] = ";".join(kept)
     return changed

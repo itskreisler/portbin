@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import subprocess
 from typing import Any
 
@@ -25,7 +26,9 @@ def step(step_type: str):
 def run(manifest: dict[str, Any], confirm: bool = True, scope: str | None = None,
         bin_dir: str | None = None, prefix: str | None = None) -> bool:
     steps = manifest.get("steps", [])
+    cloned = False
     if scope or bin_dir or prefix:
+        cloned = True
         steps = [dict(s) for s in steps]
         for s in steps:
             if scope and s.get("type") in ("path", "env"):
@@ -35,11 +38,15 @@ def run(manifest: dict[str, Any], confirm: bool = True, scope: str | None = None
                     s["dest"] = platform.translate_path(s["dest"], bin_dir, prefix)
                 if "source" in s:
                     s["source"] = platform.translate_path(s["source"], bin_dir, prefix)
+            elif s.get("type") == "extract":
+                s["dest"] = platform.translate_path(s["dest"], bin_dir, prefix)
             elif s.get("type") == "shim":
                 if "command" in s:
                     s["command"] = platform.translate_command(s["command"], bin_dir, prefix)
                 if bin_dir:
                     s["bin"] = bin_dir
+            elif s.get("type") == "run" and bin_dir:
+                s["_bin_dir"] = bin_dir
             elif s.get("type") == "path":
                 s["value"] = platform.translate_path(s["value"], bin_dir, prefix)
     for i, s in enumerate(steps):
@@ -52,6 +59,12 @@ def run(manifest: dict[str, Any], confirm: bool = True, scope: str | None = None
             if answer.lower() in ("n", "no"):
                 continue
         handler(s, manifest)
+    if cloned:
+        for orig, copy in zip(manifest.get("steps", []), steps, strict=True):
+            if copy.get("captured_version") is not None:
+                orig["captured_version"] = copy["captured_version"]
+            if "_bin_dir" in copy:
+                orig.pop("_bin_dir", None)
     platform.cleanup_temp()
     return True
 
@@ -92,7 +105,11 @@ def _move(s: dict, m: dict) -> None:
 @step("run")
 def _run(s: dict, m: dict) -> None:
     cmd = platform.expand_command(s["command"])
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    env = None
+    if s.get("_bin_dir"):
+        env = dict(os.environ)
+        env["PATH"] = platform.expand(s["_bin_dir"]) + os.pathsep + env.get("PATH", "")
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True, env=env)
     if s.get("capture"):
         if res.returncode == 0 and res.stdout:
             s["captured_version"] = res.stdout.strip().splitlines()[0]

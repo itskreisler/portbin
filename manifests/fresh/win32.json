@@ -1,0 +1,13 @@
+{
+  "tool": "fresh",
+  "platform": "win32",
+  "version": "0.4.10",
+  "steps": [
+    { "type": "download", "url": "https://github.com/sinelaw/fresh/releases/download/v0.4.10/fresh-editor-x86_64-pc-windows-msvc.zip", "dest": "%TEMP%/portbin/fresh.zip" },
+    { "type": "verify", "file": "%TEMP%/portbin/fresh.zip", "sha256": "30abbfce00901b92ce55ef364af1f2d4fdf25e36f36449d3c7cb7d35573f3a8b" },
+    { "type": "extract", "archive": "%TEMP%/portbin/fresh.zip", "dest": "~/.local/share/portbin/tools/fresh" },
+    { "type": "shim", "name": "fresh", "command": "~/.local/share/portbin/tools/fresh/fresh.exe", "scope": "user" },
+    { "type": "run", "command": "fresh --version", "capture": true },
+    { "type": "path", "value": "~/.local/bin", "scope": "user" }
+  ]
+}
