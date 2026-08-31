@@ -148,6 +148,9 @@
       "tool": "fresh",
       "platform": "win32",
       "version": "0.4.10",
+      "pbx": {
+        "command": "fresh.exe"
+      },
       "steps": [
         {
           "type": "download",

@@ -74,11 +74,7 @@ def _download(s: dict, m: dict) -> None:
     dest = platform.expand(s["dest"])
     path = platform.resolve_path(dest)
 
-    def progress(chunk: bytes) -> None:
-        if VERBOSE:
-            print(f"  +{len(chunk):,} bytes -> {path}")
-
-    downloader.download(s["url"], path, progress=progress if VERBOSE else None)
+    downloader.download(s["url"], path)
     if VERBOSE:
         print(f"  descarga completa: {path.stat().st_size:,} bytes")
 

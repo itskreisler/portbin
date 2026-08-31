@@ -101,10 +101,17 @@ class Manifest(BaseModel):
     )
     version: str | None = Field(default=None, description="Versión o canal del build (ej. 'release').")
     note: str | None = Field(default=None, description="Nota informativa libre.")
+    pbx: PbxSpec | None = Field(default=None, description="Configuración del ejecutor temporal pbx.")
     steps: list[Step] = Field(
         default_factory=list,
         description="Secuencia de pasos de instalación: download, verify, extract, move, run, shim, path, env.",
     )
+
+
+class PbxSpec(BaseModel):
+    """Spec de pbx: binario que se ejecuta temporalmente desde el cache en %TEMP%."""
+
+    command: str = Field(description="Binario dentro del payload que ejecuta 'pbx use' (ej. 'fresh.exe').")
 
 
 def validate_manifest(data: dict[str, Any], *, source: str = "manifest") -> Manifest:

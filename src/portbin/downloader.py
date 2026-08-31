@@ -9,15 +9,23 @@ from urllib import request
 
 from portbin import platform
 
+try:
+    from tqdm import tqdm
+except ImportError:  # pragma: no cover
+    tqdm = None
+
 
 def download(url: str, dest: Path, progress: Callable[[bytes], None] | None = None) -> Path:
     dest.parent.mkdir(parents=True, exist_ok=True)
     if platform.is_windows() and _have_curl():
-        _curl_download(url, dest)
-        if progress:
-            progress(b"")
-        return dest
-    _urllib_download(url, dest, progress)
+        try:
+            _urllib_download(url, dest, progress)
+            return dest
+        except Exception:  # noqa: BLE001 - fallback a curl ante fallo de red/TLS
+            pass
+    _curl_download(url, dest)
+    if progress:
+        progress(b"")
     return dest
 
 
@@ -55,10 +63,36 @@ def _urllib_download(url: str, dest: Path, progress: Callable[[bytes], None] | N
     req = request.Request(url, headers={"User-Agent": "portbin"})
     context = _ssl_context()
     with request.urlopen(req, context=context) as resp, dest.open("wb") as fh:
-        while chunk := resp.read(64 * 1024):
-            if progress:
-                progress(chunk)
-            fh.write(chunk)
+        total = int(resp.headers.get("Content-Length") or 0)
+        with _make_progress(total) as bar:
+            while chunk := resp.read(64 * 1024):
+                if progress:
+                    progress(chunk)
+                fh.write(chunk)
+                if bar is not None:
+                    bar.update(len(chunk))
+
+
+def _make_progress(total: int):
+    if tqdm is None or total <= 0:
+        return _null_context()
+    return tqdm(
+        total=total,
+        unit="B",
+        unit_scale=True,
+        unit_divisor=1024,
+        desc="Descargando",
+        mininterval=0.1,
+        dynamic_ncols=True,
+    )
+
+
+class _null_context:
+    def __enter__(self):
+        return None
+
+    def __exit__(self, *exc):
+        return False
 
 
 def _ssl_context() -> ssl.SSLContext | None:

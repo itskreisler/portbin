@@ -16,10 +16,12 @@ classifiers = [
 dependencies = [
     "pydantic>=2.13.5",
     "truststore>=0.10",
+    "tqdm>=4.70.0",
 ]
 
 [project.scripts]
 portbin = "portbin.cli:main"
+pbx = "portbin.pbx:main"
 
 [dependency-groups]
 dev = [
